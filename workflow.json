@@ -1,0 +1,322 @@
+{
+  "id": "tpl-1857094630",
+  "name": "Retail Banking Collateral Limit Manager",
+  "description": "Retail Banking Collateral Limit Manager prices exposure limits and settles transactions; applies decision gates and observability; orchestrates via SWIFT Gateway to reduce settlement breaks.",
+  "industry": "Banking & Finance",
+  "pattern": "Self-Verify",
+  "complexity": "Intermediate",
+  "rating": 4.6,
+  "downloads": 18713,
+  "favorites": 854,
+  "executionTime": "12 min",
+  "tags": [
+    "fraud",
+    "sanctions",
+    "treasury",
+    "self-verify",
+    "banking"
+  ],
+  "steps": [
+    {
+      "id": "intake",
+      "name": "Order Intake",
+      "description": "Collect, validate and normalize customer profiles from Sanctions Lists; attach a runId and timestamp for traceability."
+    },
+    {
+      "id": "generate-0",
+      "name": "Generate",
+      "description": "Execute generate phase for the Self-Verify pattern: persist interim state, enforce guardrails, and emit structured JSON results."
+    },
+    {
+      "id": "verify-1",
+      "name": "Verify",
+      "description": "Execute verify phase for the Self-Verify pattern: persist interim state, enforce guardrails, and emit structured JSON results."
+    },
+    {
+      "id": "case-management-0",
+      "name": "Case Management",
+      "description": "Case Management across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability."
+    },
+    {
+      "id": "limit-control-1",
+      "name": "Limit Control",
+      "description": "Limit Control across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability."
+    },
+    {
+      "id": "portfolio-check-2",
+      "name": "Portfolio Check",
+      "description": "Portfolio Check across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability."
+    },
+    {
+      "id": "finalize",
+      "name": "Operations Handoff",
+      "description": "Assemble final payload with status, artifacts, KPIs and audit trail; store to Market Data Feed; return response JSON for the client."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "intake",
+      "type": "agentbridge",
+      "data": {
+        "label": "Order Intake",
+        "description": "Collect, validate and normalize customer profiles from Sanctions Lists; attach a runId and timestamp for traceability.",
+        "nodeType": "input",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 60,
+        "y": 120
+      }
+    },
+    {
+      "id": "generate-0",
+      "type": "agentbridge",
+      "data": {
+        "label": "Generate",
+        "description": "Execute generate phase for the Self-Verify pattern: persist interim state, enforce guardrails, and emit structured JSON results.",
+        "nodeType": "llm",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 310,
+        "y": 120
+      }
+    },
+    {
+      "id": "verify-1",
+      "type": "agentbridge",
+      "data": {
+        "label": "Verify",
+        "description": "Execute verify phase for the Self-Verify pattern: persist interim state, enforce guardrails, and emit structured JSON results.",
+        "nodeType": "llm",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 560,
+        "y": 120
+      }
+    },
+    {
+      "id": "case-management-0",
+      "type": "agentbridge",
+      "data": {
+        "label": "Case Management",
+        "description": "Case Management across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability.",
+        "nodeType": "llm",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 810,
+        "y": 120
+      }
+    },
+    {
+      "id": "limit-control-1",
+      "type": "agentbridge",
+      "data": {
+        "label": "Limit Control",
+        "description": "Limit Control across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability.",
+        "nodeType": "llm",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 1060,
+        "y": 120
+      }
+    },
+    {
+      "id": "portfolio-check-2",
+      "type": "agentbridge",
+      "data": {
+        "label": "Portfolio Check",
+        "description": "Portfolio Check across joined datasets; branch on thresholds using decision gates; write metrics (success/error counts) for observability.",
+        "nodeType": "llm",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 1310,
+        "y": 120
+      }
+    },
+    {
+      "id": "finalize",
+      "type": "agentbridge",
+      "data": {
+        "label": "Operations Handoff",
+        "description": "Assemble final payload with status, artifacts, KPIs and audit trail; store to Market Data Feed; return response JSON for the client.",
+        "nodeType": "output",
+        "category": "ai-models",
+        "executionMode": "autonomous"
+      },
+      "position": {
+        "x": 1560,
+        "y": 120
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-0",
+      "source": "intake",
+      "target": "generate-0",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    },
+    {
+      "id": "edge-1",
+      "source": "generate-0",
+      "target": "verify-1",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    },
+    {
+      "id": "edge-2",
+      "source": "verify-1",
+      "target": "case-management-0",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    },
+    {
+      "id": "edge-3",
+      "source": "case-management-0",
+      "target": "limit-control-1",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    },
+    {
+      "id": "edge-4",
+      "source": "limit-control-1",
+      "target": "portfolio-check-2",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    },
+    {
+      "id": "edge-5",
+      "source": "portfolio-check-2",
+      "target": "finalize",
+      "type": "agentbridge",
+      "data": {
+        "label": "flow"
+      }
+    }
+  ],
+  "preview": "Order Intake → Generate → Verify → Case Management → Limit Control → Portfolio Check → Operations Handoff",
+  "featured": true,
+  "createdAt": "2026-02-24T17:05:18.112Z",
+  "author": "AgentBridge Team",
+  "deployments": 1879,
+  "lastDeployed": "2026-03-20T08:22:08.997Z",
+  "configuration": {
+    "provider": "azure",
+    "region": "us-west-2",
+    "compute": "cpu-optimized"
+  },
+  "healthStatus": "healthy",
+  "deploymentCount": 951,
+  "githubRepo": "https://github.com/agentbridge/retail-banking-collateral-limit-manager",
+  "maintainer": "AgentBridge Team",
+  "agenticLayers": {
+    "reasoning": {
+      "modelType": "gpt-4o",
+      "reasoningPattern": "ReAct",
+      "contextWindow": 128000,
+      "memorySystem": "hybrid",
+      "decisionFramework": "Multi-Criteria Decision Analysis"
+    },
+    "orchestration": {
+      "workflowEngine": "n8n",
+      "coordinationPattern": "centralized",
+      "failoverStrategy": "retry",
+      "loadBalancing": "intelligent"
+    },
+    "protocol": {
+      "communicationProtocol": "MCP",
+      "messageFormat": "JSON",
+      "authenticationMethod": "OAuth2",
+      "encryptionStandard": "AES-256"
+    },
+    "governance": {
+      "policyEngine": "OPA",
+      "complianceStandards": [
+        "SOC2",
+        "GDPR"
+      ],
+      "auditTrail": true,
+      "riskAssessment": "medium",
+      "dataClassification": "internal"
+    },
+    "observability": {
+      "metricsCollection": "Prometheus",
+      "loggingFramework": "ELK",
+      "tracingSystem": "Jaeger",
+      "alertingRules": [],
+      "dashboardConfig": {
+        "layout": "grid",
+        "widgets": [
+          "metrics",
+          "logs",
+          "traces"
+        ],
+        "refreshInterval": 30
+      }
+    },
+    "intelligence": {
+      "learningCapability": "online",
+      "knowledgeBase": "vector-db",
+      "adaptationMechanism": "ml-based",
+      "performanceOptimization": "ai-driven"
+    }
+  },
+  "businessFunction": "data-preparation-node",
+  "autonomyLevel": "semi-autonomous",
+  "cognitiveCapabilities": [
+    {
+      "name": "Pattern Recognition",
+      "description": "Identifies patterns in business processes",
+      "confidenceLevel": 0.85,
+      "lastUpdated": "2026-04-10T17:05:18.134Z"
+    }
+  ],
+  "roiMetrics": {
+    "costSavings": 80790,
+    "timeReduction": 35,
+    "accuracyImprovement": 31,
+    "throughputIncrease": 53,
+    "errorReduction": 53
+  },
+  "complianceFramework": {
+    "standards": [
+      "SOC2",
+      "GDPR",
+      "ISO27001"
+    ],
+    "certifications": [
+      "SOC2 Type II"
+    ],
+    "auditFrequency": "monthly",
+    "lastAudit": "2026-02-19T19:16:48.817Z"
+  },
+  "scalingPolicy": {
+    "minInstances": 1,
+    "maxInstances": 10,
+    "scaleUpThreshold": 80,
+    "scaleDownThreshold": 20,
+    "cooldownPeriod": 300
+  }
+}
